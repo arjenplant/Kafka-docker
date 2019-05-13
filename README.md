@@ -4,7 +4,7 @@
 
 Navigate to the directory. 
 
-`pip install . `
+`pip install . ` (If you want to run the consumer/producer outside of a container)
 
 `docker-compose up `
 
