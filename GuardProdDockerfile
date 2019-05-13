@@ -1,0 +1,38 @@
+FROM python:3.7.3-slim
+
+RUN apt-get update && apt-get -y install cron
+
+ENV KAFKA_HOST kafka
+
+ENV KAFKA_PORT 9093
+
+# Copy hello-cron file to the cron.d directory
+COPY producer-cron /etc/cron.d/producer-cron
+
+# Give execution rights on the cron job
+RUN chmod 0644 /etc/cron.d/producer-cron
+
+# Apply cron job
+RUN crontab /etc/cron.d/producer-cron
+
+# Create the log file to be able to run tail
+RUN touch /var/log/cron.log
+
+RUN mkdir /app/
+
+WORKDIR /app/
+
+COPY src/kafka/guardian_producer.py src/kafka/guardian_producer.py
+
+COPY src/general src/general
+
+COPY startup_cron.sh startup_cron.sh
+
+COPY setup.py setup.py
+
+COPY config.conf config.conf
+
+RUN pip install .
+
+# Run the command on container startup
+CMD sleep 5; echo "container start up" >> /var/log/cron.log; bash startup_cron.sh 
