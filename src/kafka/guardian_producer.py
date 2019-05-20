@@ -9,18 +9,12 @@ import logging as log
 
 #Configuration
 from general import env_vars
+
 #Setting the basic logging to INFO
 log.basicConfig(level=log.INFO)
 
-#Setting the configuration for the application
-host = env_vars.KAFKA_HOST
-port = env_vars.KAFKA_PORT
-topic = env_vars.GUARDIAN_TOPIC
-key  = env_vars.GUARDIAN_KEY
-url = env_vars.GUARDIAN_URL
 
-
-def get_last_n_guardian_articles(n:int = 10):
+def get_last_n_guardian_articles(n:int = 10, url=env_vars.GUARDIAN_URL, key=env_vars.GUARDIAN_KEY):
     """ 
     Makes an API call to the guardian and returns the N articles
         
@@ -41,7 +35,7 @@ def get_last_n_guardian_articles(n:int = 10):
     )
 
 
-def create_producer() -> KafkaProducer:
+def create_producer(host=env_vars.KAFKA_HOST, port=env_vars.KAFKA_PORT) -> KafkaProducer:
     """ 
     Creates the producer
 
@@ -51,7 +45,7 @@ def create_producer() -> KafkaProducer:
     return KafkaProducer(bootstrap_servers=[f'{host}:{port}'])
 
 
-def send_messages_to_kafka(data:bytes, producer:KafkaProducer):
+def send_messages_to_kafka(data:bytes, producer:KafkaProducer, topic=env_vars.GUARDIAN_TOPIC):
     """
     Sends the response of the API to the KafkaBroker
 

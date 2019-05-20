@@ -11,18 +11,16 @@ from datetime import datetime
 
 log.basicConfig(level=log.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-
-#Setting the configuration for the application
-host = env_vars.KAFKA_HOST
-port = env_vars.KAFKA_PORT
-topic = env_vars.GUARDIAN_TOPIC
-key  = env_vars.GUARDIAN_KEY
-url = env_vars.GUARDIAN_URL
 groupid = env_vars.GUARDIAN_GROUP_ID
 
 datetime_format = '%Y-%m-%dT%H:%M:%S%z'  # Format guardian 2019-05-08T11:33:13Z
 
-def create_consumer() -> KafkaConsumer:
+
+def create_consumer(
+    host=env_vars.KAFKA_HOST,
+    port=env_vars.KAFKA_PORT,
+    topic=env_vars.GUARDIAN_TOPIC,
+    groupid=env_vars.GUARDIAN_GROUP_ID) -> KafkaConsumer:
     """
     Creates a consumer
 
