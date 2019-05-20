@@ -4,6 +4,8 @@
 
 Navigate to the directory. 
 
+`pip install . ` (If you want to run the consumer/producer outside of a container)
+
 `docker-compose up `
 
 `docker build -f GuardProdDockerfile -t guard_producer:1.0.0 . `
